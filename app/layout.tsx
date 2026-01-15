@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "IFETO E-Commerce",
-  description: "Your shopping from abroad made easier",
+  title: "Geepay - Centralized Peer Contribution",
+  description:
+    "Manage your collective contributions with transparency and ease.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -13,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` antialiased`}>{children}</body>
+      <body
+        className={`antialiased selection:bg-secondary selection:text-white`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
