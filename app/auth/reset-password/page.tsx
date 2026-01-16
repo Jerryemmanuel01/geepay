@@ -1,96 +1,70 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { useSignupForm } from "@/hooks/useSignupForm";
-import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { ArrowLeft, Loader2, LockKeyhole } from "lucide-react";
+import { useResetPasswordForm } from "@/hooks/useResetPasswordForm";
 
-export default function SignupPage() {
-  const { formik, isLoading } = useSignupForm();
+function ResetPasswordContent() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") || "";
+  const { formik, isLoading } = useResetPasswordForm(token);
+
+  if (!token) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-4 mx-auto">
+            <LockKeyhole size={32} />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            Invalid Request
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            Missing reset token. Please check the link from your email.
+          </p>
+          <Link
+            href="/auth/login"
+            className="text-primary font-bold hover:underline"
+          >
+            Back to Login
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
         <div className="p-8">
           <Link
-            href="/"
+            href="/auth/login"
             className="inline-flex items-center text-sm text-slate-500 hover:text-primary mb-6 transition-colors"
           >
-            <ArrowLeft size={16} className="mr-1" /> Back to Home
+            <ArrowLeft size={16} className="mr-1" /> Back to Login
           </Link>
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <Image src="/favicon.png" alt="Logo" width={60} height={60} />
+            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-secondary to-accent flex items-center justify-center text-white font-bold text-xl shadow-lg mx-auto mb-4">
+              <LockKeyhole size={24} />
             </div>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-              Create Account
+              Reset Password
             </h2>
             <p className="text-slate-600 dark:text-slate-400 mt-2">
-              Join Geepay and start managing your contributions
+              Create a new secure password for your account.
             </p>
           </div>
 
           <form onSubmit={formik.handleSubmit} className="space-y-6">
-            {/* Username */}
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-              >
-                Username
-              </label>
-              <input
-                id="username"
-                type="text"
-                {...formik.getFieldProps("username")}
-                className={`w-full px-4 py-3 rounded-lg border ${
-                  formik.touched.username && formik.errors.username
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-slate-300 dark:border-slate-700 focus:border-primary focus:ring-primary"
-                } bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all`}
-                placeholder="johndoe"
-              />
-              {formik.touched.username && formik.errors.username && (
-                <div className="text-red-500 text-sm mt-1">
-                  {formik.errors.username}
-                </div>
-              )}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-              >
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                {...formik.getFieldProps("email")}
-                className={`w-full px-4 py-3 rounded-lg border ${
-                  formik.touched.email && formik.errors.email
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-slate-300 dark:border-slate-700 focus:border-primary focus:ring-primary"
-                } bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all`}
-                placeholder="john@example.com"
-              />
-              {formik.touched.email && formik.errors.email && (
-                <div className="text-red-500 text-sm mt-1">
-                  {formik.errors.email}
-                </div>
-              )}
-            </div>
-
             {/* Password */}
             <div>
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
               >
-                Password
+                New Password
               </label>
               <input
                 id="password"
@@ -116,7 +90,7 @@ export default function SignupPage() {
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
               >
-                Confirm Password
+                Confirm New Password
               </label>
               <input
                 id="confirmPassword"
@@ -146,25 +120,29 @@ export default function SignupPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="animate-spin mr-2" size={20} />
-                  Creating Account...
+                  Resetting...
                 </>
               ) : (
-                "Sign Up"
+                "Reset Password"
               )}
             </button>
           </form>
-
-          <p className="mt-8 text-center text-slate-600 dark:text-slate-400">
-            Already have an account?{" "}
-            <Link
-              href="/auth/login"
-              className="text-primary font-bold hover:text-secondary transition-colors"
-            >
-              Log In
-            </Link>
-          </p>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="animate-spin text-primary" size={32} />
+        </div>
+      }
+    >
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

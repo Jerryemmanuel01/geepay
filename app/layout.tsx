@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
+import ReduxProvider from "@/lib/redux/provider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,11 +19,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`antialiased selection:bg-secondary selection:text-white`}
       >
-        {children}
+        <ReduxProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster position="top-right" />
+          </ThemeProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

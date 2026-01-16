@@ -24,16 +24,16 @@
   }
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #0a3d74;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #020817; /* Very dark blue/slate */
-    --foreground: #ffffff;
-  }
+.dark {
+  --background: #020817; /* Very dark blue/slate */
+  --foreground: #ffffff;
 }
 
 body {
@@ -60,4 +60,10 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
