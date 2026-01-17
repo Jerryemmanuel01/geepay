@@ -11,15 +11,17 @@ import {
   LogOut,
   Menu,
   X,
-  Bell,
   User,
   Sun,
   Moon,
+  ShieldCheck,
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { logout } from "@/lib/redux/features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
 import Image from "next/image";
 
 interface DashboardLayoutProps {
@@ -77,13 +79,28 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Redirect if not approved
+  const user = useSelector((state: RootState) => state.auth.user);
+  const pathname = usePathname();
+
+  React.useEffect(() => {
+    if (
+      mounted &&
+      user &&
+      !user.isApproved &&
+      pathname !== "/dashboard/pending-approval"
+    ) {
+      router.push("/dashboard/pending-approval");
+    }
+  }, [mounted, user, pathname, router]);
+
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -156,6 +173,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               href="/dashboard/settings"
               onLinkClick={() => setIsSidebarOpen(false)}
             />
+            {mounted && user?.role === "admin" && (
+              <SidebarItem
+                icon={ShieldCheck}
+                label="Admin"
+                href="/dashboard/admin"
+                onLinkClick={() => setIsSidebarOpen(false)}
+              />
+            )}
           </nav>
 
           {/* Logout */}

@@ -14,8 +14,33 @@ export const usersApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    getUnapprovedUsers: builder.query({
+      query: () => "/users/unapproved",
+      providesTags: ["UnapprovedUsers"],
+    }),
+    approveUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}/approve`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["UnapprovedUsers", "User"],
+    }),
+    getAllUsers: builder.query({
+      query: () => "/users",
+      providesTags: ["User"],
+    }),
+    getUserDetails: builder.query({
+      query: (id) => `/users/${id}`,
+      providesTags: ["User"],
+    }),
   }),
 });
 
-export const { useGetUserProfileQuery, useUpdateTransactionPinMutation } =
-  usersApi;
+export const {
+  useGetUserProfileQuery,
+  useUpdateTransactionPinMutation,
+  useGetUnapprovedUsersQuery,
+  useApproveUserMutation,
+  useGetAllUsersQuery,
+  useGetUserDetailsQuery,
+} = usersApi;

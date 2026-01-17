@@ -4,6 +4,8 @@ interface User {
   _id: string;
   username: string;
   email: string;
+  role: "user" | "admin";
+  isApproved: boolean;
 }
 
 interface AuthState {
@@ -12,8 +14,22 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
+const getUserFromStorage = (): User | null => {
+  if (typeof window !== "undefined") {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        return JSON.parse(userStr);
+      } catch (e) {
+        return null;
+      }
+    }
+  }
+  return null;
+};
+
 const initialState: AuthState = {
-  user: null, // We'll initialize from localStorage in a layout effect if needed, but for now simple
+  user: getUserFromStorage(),
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
   isAuthenticated:
     typeof window !== "undefined" ? !!localStorage.getItem("token") : false,
