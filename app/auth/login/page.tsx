@@ -6,11 +6,20 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { useLoginForm } from "@/hooks/useLoginForm";
 import Image from "next/image";
 
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
+
 export default function LoginPage() {
   const { formik, isLoading } = useLoginForm();
+  const router = useRouter();
+  const { user } = useSelector((state: RootState) => state.auth);
 
-  // Note: Formik logic is now inside the hook
-
+  React.useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden">

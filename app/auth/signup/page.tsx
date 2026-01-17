@@ -6,8 +6,20 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { useSignupForm } from "@/hooks/useSignupForm";
 import Image from "next/image";
 
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
+
 export default function SignupPage() {
   const { formik, isLoading } = useSignupForm();
+  const router = useRouter();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  React.useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">

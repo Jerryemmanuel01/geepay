@@ -77,7 +77,7 @@ const SidebarItem = ({
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
@@ -85,20 +85,24 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     setMounted(true);
   }, []);
 
-  // Redirect if not approved
+  // Redirect if not authenticated AND path is not pending-approval
   const user = useSelector((state: RootState) => state.auth.user);
+  const token = useSelector((state: RootState) => state.auth.token);
   const pathname = usePathname();
 
   React.useEffect(() => {
-    if (
-      mounted &&
-      user &&
-      !user.isApproved &&
-      pathname !== "/dashboard/pending-approval"
-    ) {
-      router.push("/dashboard/pending-approval");
+    if (mounted) {
+      if (!user && !token) {
+        router.push("/auth/login");
+      } else if (
+        user &&
+        !user.isApproved &&
+        pathname !== "/dashboard/pending-approval"
+      ) {
+        router.push("/dashboard/pending-approval");
+      }
     }
-  }, [mounted, user, pathname, router]);
+  }, [mounted, user, token, pathname, router]);
 
   const dispatch = useDispatch();
 
@@ -207,11 +211,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <span className="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-white dark:border-slate-900"></span>
             </button> */}
             <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
               className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
             >
               {mounted &&
-                (theme === "dark" ? <Sun size={20} /> : <Moon size={20} />)}
+                (resolvedTheme === "dark" ? (
+                  <Sun size={20} />
+                ) : (
+                  <Moon size={20} />
+                ))}
             </button>
           </div>
         </header>
