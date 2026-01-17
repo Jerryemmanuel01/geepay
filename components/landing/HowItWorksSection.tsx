@@ -24,18 +24,18 @@ export function HowItWorksSection() {
           {[
             {
               id: 1,
-              title: "Create Account",
-              desc: "Sign up and set up your profile in seconds.",
+              title: "Register & Verify",
+              desc: "Create your account and verify your email to get started securely.",
             },
             {
               id: 2,
-              title: "Join a Circle",
-              desc: "Create a new contribution group or join an existing one.",
+              title: "Get Approved",
+              desc: "Your account is reviewed by our administrators to ensure community safety.",
             },
             {
               id: 3,
-              title: "Start Contributing",
-              desc: "Track payments and monitor group progress instantly.",
+              title: "Manage Savings",
+              desc: "Deposit funds, track your personal balance, and withdraw with ease.",
             },
           ].map((step, idx) => (
             <motion.div

@@ -54,7 +54,7 @@ export default function PendingApprovalPage() {
           <div className="text-sm text-slate-500">
             Need help?{" "}
             <a
-              href="mailto:support@geepay.com"
+              href="mailto:jerryemmanuelolisa@gmail.com"
               className="text-primary hover:underline"
             >
               Contact Support

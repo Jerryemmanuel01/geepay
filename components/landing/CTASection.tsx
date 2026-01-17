@@ -12,8 +12,7 @@ export function CTASection() {
           Ready to organize your finances?
         </h2>
         <p className="text-xl text-white/90 mb-10 font-medium">
-          Join thousands of users who trust Geepay for their collective
-          contributions.
+          Join thousands of users who trust Geepay for their collective savings.
         </p>
         <Link href="/auth/signup">
           <button className="px-10 py-5 bg-white text-primary rounded-full font-bold text-xl shadow-2xl hover:shadow-white/20 hover:scale-105 transition-all">

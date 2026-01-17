@@ -5,9 +5,9 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Geepay - Centralized Peer Contribution",
+  title: "Geepay - Centralized Peer Savings",
   description:
-    "Manage your collective contributions with transparency and ease.",
+    "Manage your collective savings with transparency and ease.",
   icons: {
     icon: "/favicon.png",
   },

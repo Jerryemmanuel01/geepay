@@ -37,7 +37,7 @@ export function FeaturesSection() {
             icon={<Wallet className="text-white" size={32} />}
             color="bg-accent"
             title="Automated Tracking"
-            description="Real-time balance updates, contribution history, and financial summaries at your fingertips."
+            description="Real-time balance updates, savings history, and financial summaries at your fingertips."
           />
         </div>
       </div>
